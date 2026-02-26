@@ -7,6 +7,7 @@ A collection of [OpenClaw](https://openclaw.ai/) / [ClawHub](https://clawhub.ai/
 | Skill | Description | Proxy |
 |---|---|---|
 | [ctrader-commander](clawhub/ctrader-commander/) | Place and manage cTrader orders, fetch live quotes and OHLC candles, manage positions, and query account info. Requires [ctrader-openapi-proxy](https://github.com/LogicalSapien/ctrader-openapi-proxy). | [ctrader-openapi-proxy](https://github.com/LogicalSapien/ctrader-openapi-proxy) |
+| [neomutt-commander](clawhub/neomutt-commander/) | Read, search, organise, and draft emails using neomutt — a terminal IMAP client. Works with any IMAP provider. Renders HTML email via w3m. Saves to draft by default unless sending is approved. | — |
 
 ## Install a skill
 
