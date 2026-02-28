@@ -96,12 +96,32 @@ curl -s "http://localhost:9009/get-data?command=ClosePosition%20123456%201000"
 curl -s "http://localhost:9009/get-data?command=CancelOrder%20789"
 ```
 
+## Amend SL/TP on an open position
+
+```bash
+curl -s -X POST http://localhost:9009/api/amend-position \
+  -H "Content-Type: application/json" \
+  -d '{"positionId": 123456, "stopLoss": 1.08500, "takeProfit": 1.09500}'
+```
+
+Omit `stopLoss` or `takeProfit` to leave them unchanged. Use `"trailingStopLoss": true` to enable trailing stop.
+
+## Amend a pending limit or stop order
+
+```bash
+curl -s -X POST http://localhost:9009/api/amend-order \
+  -H "Content-Type: application/json" \
+  -d '{"orderId": 789, "limitPrice": 1.08200}'
+```
+
+Use `limitPrice` for LIMIT orders, `stopPrice` for STOP orders. Add `volume` (units) to change size.
+
 ## Deal / trade history (closed trades)
 
 ```bash
 NOW_MS=$(python3 -c "import time; print(int(time.time()*1000))")
 FROM_MS=$(python3 -c "import time; print(int(time.time()*1000) - 604800000)")
-curl -s "http://localhost:9009/get-data?command=ProtoOAGetDealListReq%20${FROM_MS}%20${NOW_MS}"
+curl -s "http://localhost:9009/get-data?command=ProtoOADealListReq%20${FROM_MS}%20${NOW_MS}"
 ```
 
 Returns `deal[]` — each entry has `dealId`, `positionId`, `symbolId`, `tradeSide`, `volume`, `executionPrice`, `commission`, `dealStatus`, and `closePositionDetail` for closing deals. Adjust the `FROM_MS` offset (ms) to change the lookback period.
