@@ -1,6 +1,6 @@
 ---
 name: ctrader-commander
-description: Place and manage cTrader orders (market, limit, stop), check open positions, fetch live quotes and OHLC candles, and query account balance and equity via a local HTTP proxy. No credentials or token required at call time.
+description: Place and manage cTrader orders (market, limit, stop), check open positions, fetch deal/trade history, get live quotes and OHLC candles, and query account balance and equity via a local HTTP proxy. No credentials or token required at call time.
 homepage: https://github.com/LogicalSapien/agent-skills/tree/main/clawhub/ctrader-commander
 metadata: {"openclaw": {"emoji": "\ud83d\udcc8", "requires": {"bins": ["curl"]}, "homepage": "https://github.com/LogicalSapien/agent-skills/tree/main/clawhub/ctrader-commander"}}
 ---
@@ -95,6 +95,16 @@ curl -s "http://localhost:9009/get-data?command=ClosePosition%20123456%201000"
 ```bash
 curl -s "http://localhost:9009/get-data?command=CancelOrder%20789"
 ```
+
+## Deal / trade history (closed trades)
+
+```bash
+NOW_MS=$(python3 -c "import time; print(int(time.time()*1000))")
+FROM_MS=$(python3 -c "import time; print(int(time.time()*1000) - 604800000)")
+curl -s "http://localhost:9009/get-data?command=ProtoOAGetDealListReq%20${FROM_MS}%20${NOW_MS}"
+```
+
+Returns `deal[]` — each entry has `dealId`, `positionId`, `symbolId`, `tradeSide`, `volume`, `executionPrice`, `commission`, `dealStatus`, and `closePositionDetail` for closing deals. Adjust the `FROM_MS` offset (ms) to change the lookback period.
 
 ## Account info (balance, equity, leverage)
 

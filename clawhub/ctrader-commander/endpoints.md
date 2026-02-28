@@ -145,6 +145,7 @@ Volume reference:
 | `OrderListByPositionId` | `positionId` | Order history for a position |
 | `DealOffsetList` | `dealId` | Offset deals for a deal |
 | `GetPositionUnrealizedPnL` | — | Unrealised P&L for all open positions |
+| `ProtoOAGetDealListReq` | `fromTimestamp toTimestamp` | **Deal/trade history (closed trades)** |
 | `ProtoOAExpectedMarginReq` | `symbolId volumeInUnits` | Expected margin for a trade |
 
 ### Usage examples
@@ -170,6 +171,11 @@ curl -s "http://localhost:9009/get-data?command=CancelOrder%20789"
 
 # Unrealised P&L
 curl -s "http://localhost:9009/get-data?command=GetPositionUnrealizedPnL"
+
+# Deal/trade history — last 7 days
+NOW_MS=$(python3 -c "import time; print(int(time.time()*1000))")
+FROM_MS=$(python3 -c "import time; print(int(time.time()*1000) - 604800000)")
+curl -s "http://localhost:9009/get-data?command=ProtoOAGetDealListReq%20${FROM_MS}%20${NOW_MS}"
 
 # Expected margin for 1 lot of symbol 158
 curl -s "http://localhost:9009/get-data?command=ProtoOAExpectedMarginReq%20158%20100000"
