@@ -13,6 +13,8 @@ No token or API key is needed by callers. All credentials live in `.env` on the 
 | `POST` | `/api/trendbars` | OHLC candle data |
 | `POST` | `/api/live-quote` | Recent tick/quote data |
 | `POST` | `/api/market-order` | Place market, limit, or stop order |
+| `POST` | `/api/amend-position` | Amend stop loss / take profit on an open position |
+| `POST` | `/api/amend-order` | Amend a pending limit or stop order (price and/or volume) |
 | `GET` | `/get-data?command=...` | Generic passthrough for any cTrader command |
 
 ---
@@ -116,6 +118,49 @@ Volume reference:
 | `1000` | 0.01 (micro — typical minimum) |
 | `10000` | 0.1 (mini) |
 | `100000` | 1.0 (standard) |
+
+---
+
+## POST /api/amend-position
+
+```
+POST /api/amend-position
+Content-Type: application/json
+
+{
+  "positionId":      123456,
+  "stopLoss":        1.08500,
+  "takeProfit":      1.09500
+}
+```
+
+| Field | Required | Notes |
+|---|---|---|
+| `positionId` | ✓ | From `ProtoOAReconcileReq` |
+| `stopLoss` | Optional | Absolute price level (omit to leave unchanged) |
+| `takeProfit` | Optional | Absolute price level (omit to leave unchanged) |
+| `trailingStopLoss` | Optional | `true` to enable trailing stop |
+
+---
+
+## POST /api/amend-order
+
+```
+POST /api/amend-order
+Content-Type: application/json
+
+{
+  "orderId":    789,
+  "limitPrice": 1.08200
+}
+```
+
+| Field | Required | Notes |
+|---|---|---|
+| `orderId` | ✓ | From `ProtoOAReconcileReq` |
+| `limitPrice` | For LIMIT orders | New price |
+| `stopPrice` | For STOP orders | New price |
+| `volume` | Optional | New volume in units |
 
 ---
 

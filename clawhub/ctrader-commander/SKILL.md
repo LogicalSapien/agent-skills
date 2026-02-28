@@ -132,7 +132,10 @@ Returns `deal[]` — each entry has `dealId`, `positionId`, `symbolId`, `tradeSi
 curl -s "http://localhost:9009/get-data?command=ProtoOATraderReq"
 ```
 
+## First trade workflow
 
+1. Find symbol ID:
+   ```bash
    curl -s "http://localhost:9009/get-data?command=ProtoOASymbolsListReq" | python3 -c "
    import sys, json
    data = json.load(sys.stdin)
